@@ -9,8 +9,6 @@ export default function Footer() {
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          
-          {/* 🚀 Brand & About Section */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <span className="text-xl font-extrabold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
@@ -21,8 +19,6 @@ export default function Footer() {
               A crowd-sourced platform to share, validate, and collaborate on tech ideas. Built with Next.js, Tailwind CSS, and MongoDB.
             </p>
           </div>
-
-          {/* 🔗 Navigation Links */}
           <div>
             <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-4">
               Navigation
@@ -50,8 +46,6 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-
-          {/* 🛠️ Built With / Technologies */}
           <div>
             <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-4">
               Tech Stack
@@ -69,7 +63,6 @@ export default function Footer() {
             </h3>
             <p className="text-sm text-slate-400 mb-4">Follow the project development and updates.</p>
             <div className="flex space-x-4">
-              {/* GitHub */}
               <a 
                 href="https://github.com" 
                 target="_blank" 
@@ -93,11 +86,9 @@ export default function Footer() {
           </div>
 
         </div>
-
-        {/* 📋 Bottom Section */}
         <div className="mt-12 pt-8 border-t border-slate-800/60 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-slate-500">
-            &copy; {currentYear} IdeaVault. All rights reserved. Developed by Yusuf Mia.
+            &copy; {currentYear} IdeaVault. All rights reserved. Developed by Parvez patwary.
           </p>
           <div className="flex space-x-6 text-xs text-slate-500">
             <span className="hover:text-slate-400 cursor-pointer">Privacy Policy</span>
