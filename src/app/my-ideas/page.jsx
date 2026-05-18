@@ -5,8 +5,10 @@ import Swal from "sweetalert2";
 export default function MyIdeasPage() {
   const [myIdeas, setMyIdeas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const userEmail = "yusuf@example.com"; 
+  const userEmail = "tanjilapatwaryy@gmail.com"; 
+
   const fetchMyIdeas = () => {
+    if (!userEmail) return;
     setLoading(true);
     fetch(`http://localhost:8000/api/my-ideas?email=${userEmail}`)
       .then((res) => res.json())
@@ -22,7 +24,8 @@ export default function MyIdeasPage() {
 
   useEffect(() => {
     fetchMyIdeas();
-  }, []);
+  }, [userEmail]);
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -51,6 +54,7 @@ export default function MyIdeasPage() {
       }
     });
   };
+
   const handleUpdate = async (idea) => {
     const { value: newTitle } = await Swal.fire({
       title: "Update Idea Title",
@@ -72,7 +76,7 @@ export default function MyIdeasPage() {
         });
         
         const data = await response.json();
-        if (data.modifiedCount > 0) {
+        if (data.modifiedCount > 0 || data.acknowledged) {
           Swal.fire("Success!", "Idea title updated successfully.", "success");
           fetchMyIdeas();
         }
@@ -121,7 +125,6 @@ export default function MyIdeasPage() {
                   <td className="px-6 py-4">{idea.targetAudience}</td>
                   <td className="px-6 py-4">
                     <div className="flex justify-center gap-3">
-                    
                       <button
                         onClick={() => handleUpdate(idea)}
                         className="px-3 py-1.5 bg-amber-500 text-white font-medium rounded-lg text-xs hover:bg-amber-600 transition-colors shadow-sm"
