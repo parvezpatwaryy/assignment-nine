@@ -83,6 +83,7 @@ export default function IdeaDetailsPage() {
       Swal.fire("Error!", "Failed to post comment.", "error");
     }
   };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-white dark:bg-gray-900">
@@ -90,6 +91,7 @@ export default function IdeaDetailsPage() {
       </div>
     );
   }
+
   if (!idea) {
     return (
       <div className="text-center my-24 text-gray-500 text-lg font-medium">
@@ -103,22 +105,33 @@ export default function IdeaDetailsPage() {
       <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 text-xs font-semibold rounded-full uppercase">
         {idea?.category || "N/A"}
       </span>
-      <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-3 mb-4">
+      <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-3 mb-2">
         {idea?.title}
       </h1>
+      {idea?.authorName && (
+        <div className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+          By: <span className="font-semibold text-gray-700 dark:text-gray-300">{idea?.authorName}</span>
+        </div>
+      )}
+      <div className="relative w-full h-[380px] rounded-2xl overflow-hidden mb-6 bg-gray-100 dark:bg-gray-800 border border-gray-100 dark:border-gray-800">
+        <img
+          src={idea?.imageUrl || "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"}
+          alt={idea?.title || "Idea Image"}
+          className="w-full h-full object-cover"
+        />
+      </div>
       <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
         {idea?.shortDescription || idea?.description || "No description available."}
       </p>
-      
       <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl mb-8">
         <div><strong>Target Audience:</strong> {idea?.targetAudience || "General"}</div>
-        {idea?.budget && <div><strong>Budget:</strong> ${idea?.budget}</div>}
+        {idea?.budget && <div><strong>Budget:</strong> {idea?.budget}</div>}
       </div>
 
       <hr className="my-8 border-gray-100 dark:border-gray-800" />
       <form onSubmit={handleCommentSubmit} className="mb-8">
         <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-          Leave a feedback / comment:
+          comment
         </label>
         <textarea
           rows="4"
