@@ -21,8 +21,6 @@ const RegistrationPage = () => {
 
       if (data) {
         toast.success("Account created successfully! 🎉");
-        
-        // 🎯 router.push বদলে window.location.href দেওয়া হলো যেন ক্যাশ ক্লিয়ার হয়ে ইনস্ট্যান্ট মেনু আসে
         setTimeout(() => {
           window.location.href = "/";
         }, 1000);
@@ -43,8 +41,6 @@ const RegistrationPage = () => {
       
       <Card className="border p-6 shadow-lg bg-white dark:bg-zinc-900 rounded-2xl">
         <Form onSubmit={onSubmit} className="flex w-96 flex-col gap-4">
-          
-          {/* নাম ফিল্ড */}
           <TextField
             isRequired
             name="name" 
@@ -54,8 +50,6 @@ const RegistrationPage = () => {
             <Input placeholder="Enter your name" />
             <FieldError className="text-xs text-red-500" />
           </TextField>
-
-          {/* ফটো URL ফিল্ড */}
           <TextField
             isRequired
             name="image" 
@@ -65,8 +59,6 @@ const RegistrationPage = () => {
             <Input placeholder="https://example.com/photo.jpg" />
             <FieldError className="text-xs text-red-500" />
           </TextField>
-
-          {/* ইমেইল ফিল্ড */}
           <TextField
             isRequired 
             name="email"
@@ -82,8 +74,6 @@ const RegistrationPage = () => {
             <Input placeholder="john@example.com" />
             <FieldError className="text-xs text-red-500" />
           </TextField>
-
-          {/* পাসওয়ার্ড ফিল্ড */}
           <TextField
             isRequired
             minLength={8}
@@ -109,8 +99,6 @@ const RegistrationPage = () => {
             </Description>
             <FieldError className="text-xs text-red-500" />
           </TextField>
-
-          {/* সাবমিট বাটন */}
           <div className="flex gap-2 mt-2">
             <Button className="w-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors py-2.5 rounded-xl shadow-md" type="submit">
               Create account

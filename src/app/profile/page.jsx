@@ -2,31 +2,46 @@
 
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+// 🎯 ইম্পোর্ট পাথটি ঠিক করা হলো (আপনার প্রোফাইল ফোল্ডার অনুযায়ী সঠিক রিলেটিভ পাথ)
+import { authClient } from "../lib/auth-client"; 
 
 export default function ProfilePage() {
+  // Better-Auth ক্লায়েন্ট থেকে রিয়েল-টাইম সেশন হুক ব্যবহার করা হলো
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+
   const [stats, setStats] = useState({ totalIdeas: 0, totalComments: 0 });
   const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState({
-    name: "Yusuf Mia",
-    email: "yusuf@example.com",
-    role: "Frontend Web Developer",
-    joinDate: "May 2026",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256&auto=format&fit=crop",
-  });
+
+  // ফর্ম এবং ইউজারের ডাইনামিক স্টেট
   const [formData, setFormData] = useState({
-    name: userData.name,
-    role: userData.role,
-    avatar: userData.avatar,
+    name: "",
+    role: "Frontend Web Developer",
+    avatar: "",
   });
 
+  // Better-Auth থেকে ইউজার ডেটা লোড হলে স্টেট আপডেট করা
   useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || "",
+        role: "Frontend Web Developer", 
+        avatar: user.image || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256",
+      });
+    }
+  }, [user]);
+
+  // ইউজারের আসল ইমেইল দিয়ে ব্যাকএন্ড এপিআই থেকে কাউন্ট ডেটা নিয়ে আসা
+  useEffect(() => {
+    if (!user?.email) return;
+
     const fetchProfileStats = async () => {
       try {
         let ideasCount = 0;
         let commentsCount = 0;
 
         try {
-          const ideasRes = await fetch(`http://localhost:8000/api/ideas/count?email=${userData.email}`);
+          const ideasRes = await fetch(`http://localhost:8000/api/ideas/count?email=${user.email}`);
           if (ideasRes.ok) {
             const ideasData = await ideasRes.json();
             ideasCount = ideasData.count || 0;
@@ -36,7 +51,7 @@ export default function ProfilePage() {
         }
 
         try {
-          const commentsRes = await fetch(`http://localhost:8000/api/comments/count?email=${userData.email}`);
+          const commentsRes = await fetch(`http://localhost:8000/api/comments/count?email=${user.email}`);
           if (commentsRes.ok) {
             const commentsData = await commentsRes.json();
             commentsCount = commentsData.count || 0;
@@ -58,33 +73,53 @@ export default function ProfilePage() {
     };
 
     fetchProfileStats();
-  }, [userData.email]);
+  }, [user?.email]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const handleProfileUpdate = (e) => {
+
+  const handleProfileUpdate = async (e) => {
     e.preventDefault();
     
-    setUserData((prev) => ({
-      ...prev,
-      name: formData.name,
-      role: formData.role,
-      avatar: formData.avatar,
-    }));
+    try {
+      // 🎯 পরবর্তীতে Better-Auth প্রোফাইল ডেটা আপডেট করার জন্য এই মেথড ব্যবহার করতে পারেন:
+      // await authClient.user.update({ name: formData.name, image: formData.avatar });
 
-    Swal.fire({
-      title: "Success!",
-      text: "Profile information updated successfully.",
-      icon: "success",
-      confirmButtonColor: "#4f46e5"
-    });
+      Swal.fire({
+        title: "Success!",
+        text: "Profile information updated successfully.",
+        icon: "success",
+        confirmButtonColor: "#4f46e5"
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to update profile.",
+        icon: "error",
+        confirmButtonColor: "#ef4444"
+      });
+    }
   };
 
-  if (loading) {
+  // লোডিং স্টেট হ্যান্ডলিং
+  if (isPending || (user && loading)) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  // যদি কোনো ইউজার লগইন না থাকে
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <p className="text-lg font-semibold text-red-500">Please log in to view your profile.</p>
+        </div>
       </div>
     );
   }
@@ -97,16 +132,17 @@ export default function ProfilePage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* বাম পাশের প্রোফাইল কার্ড */}
         <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 shadow-sm flex flex-col items-center text-center">
           <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-indigo-500/20 mb-4">
-            <img src={userData.avatar} alt={userData.name} className="w-full h-full object-cover" />
+            <img src={formData.avatar} alt={formData.name} className="w-full h-full object-cover" />
           </div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{userData.name}</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{formData.name}</h2>
           <span className="text-xs font-semibold px-2.5 py-1 bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300 rounded-full mt-1.5 uppercase tracking-wider">
-            {userData.role}
+            {formData.role}
           </span>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">{userData.email}</p>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Member since: {userData.joinDate}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">{user.email}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Member since: May 2026</p>
 
           <div className="grid grid-cols-2 gap-4 w-full mt-8 pt-6 border-t border-gray-50 dark:border-gray-800/60">
             <div className="p-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-gray-100 dark:border-gray-800">
@@ -119,6 +155,8 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
+
+        {/* ডান পাশের ফর্ম সেকশন */}
         <div className="lg:col-span-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 md:p-8 shadow-sm">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-50 dark:border-gray-800/60">Account Settings</h3>
           
@@ -152,7 +190,7 @@ export default function ProfilePage() {
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
               <input
                 type="email"
-                value={userData.email}
+                value={user.email}
                 disabled
                 className="w-full px-4 py-2.5 bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-400 dark:text-gray-500 cursor-not-allowed"
               />

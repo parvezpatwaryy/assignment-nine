@@ -51,8 +51,6 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-
-          {/* লোগো সেকশন */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="text-xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
               <span className="text-2xl">💡</span>
@@ -61,8 +59,6 @@ const Navbar = () => {
               </span>
             </Link>
           </div>
-
-          {/* ডেস্কটপ মেনু লিংকসমূহ */}
           <div className="hidden md:flex items-center space-x-6">
             <Link href="/" className={getNavLinkStyles("/")}>Home</Link>
             <Link href="/ideas" className={getNavLinkStyles("/ideas")}>Ideas</Link>
@@ -74,11 +70,7 @@ const Navbar = () => {
               </>
             )}
           </div>
-
-          {/* ডান পাশের বোতাম ও প্রোফাইল মেনু */}
           <div className="flex items-center gap-4">
-
-            {/* ডার্ক মোড বোতাম */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
@@ -92,7 +84,6 @@ const Navbar = () => {
             </button>
 
             {user ? (
-              /* ইউজার লগইন থাকলে ড্রপডাউন মেনু */
               <div className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -126,7 +117,6 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              /* ইউজার লগআউট থাকলে Login এবং Registration বাটন */
               <div className="hidden md:flex items-center gap-3">
                 <Link
                   href="/login"
@@ -142,20 +132,16 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
-
-            {/* মোবাইল হ্যামবার্গার মেনু বাটন */}
             <div className="flex md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
               >
                 {isOpen ? (
-                  /* 🎯 এখানে 'strokeLineJoin' পরিবর্তন করে 'strokeLinejoin' করা হয়েছে */
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L12 12M14 6l-8 8" />
                   </svg>
                 ) : (
-                  /* 🎯 এখানেও 'strokeLineJoin' পরিবর্তন করে 'strokeLinejoin' করা হয়েছে */
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
@@ -166,8 +152,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
-      {/* মোবাইল ড্রপডাউন মেনু */}
       {isOpen && (
         <div className="md:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <Link href="/" onClick={() => setIsOpen(false)} className={`block px-3 py-2 rounded-md text-base ${getNavLinkStyles("/")}`}>Home</Link>
