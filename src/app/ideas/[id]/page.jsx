@@ -4,13 +4,13 @@ import { useParams } from "next/navigation";
 import Swal from "sweetalert2";
 
 export default function IdeaDetailsPage() {
-  const { id } = useParams(); // ইউআরএল (URL) থেকে আইডিয়া আইডি নেওয়ার জন্য
+  const { id } = useParams(); 
   const [idea, setIdea] = useState(null);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const userEmail = "yusuf@example.com"; // অ্যাসাইনমেন্টের নিয়ম অনুযায়ী ডামি ইমেইল
+  const userEmail = "yusuf@example.com";
 
   useEffect(() => {
     let isMounted = true;
@@ -18,8 +18,6 @@ export default function IdeaDetailsPage() {
     const fetchDetailsData = async () => {
       try {
         setLoading(true);
-        
-        // ১. নির্দিষ্ট আইডিয়াটি ব্যাকএন্ড থেকে লোড করা
         const ideaRes = await fetch(`http://localhost:8000/api/ideas/${id}`);
         if (ideaRes.ok) {
           const ideaData = await ideaRes.json();
@@ -27,8 +25,6 @@ export default function IdeaDetailsPage() {
         } else {
           if (isMounted) setIdea(null);
         }
-
-        // ২. এই আইডিয়াতে আগে করা কমেন্টগুলো লোড করা
         const commentsRes = await fetch(`http://localhost:8000/api/comments?ideaId=${id}`);
         if (commentsRes.ok) {
           const commentsData = await commentsRes.json();
@@ -51,7 +47,6 @@ export default function IdeaDetailsPage() {
     };
   }, [id]);
 
-  // ৩. নতুন কমেন্ট সাবমিট করার ফাংশন
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
@@ -61,12 +56,12 @@ export default function IdeaDetailsPage() {
     }
 
     const commentData = {
-      email: userEmail, // কমেন্ট কারীর ইমেইল (যা My Interactions পেজে ফিল্টার হবে)
+      email: userEmail,
       ideaId: id,
       title: idea?.title || "Untitled Idea",
       category: idea?.category || "General",
       targetAudience: idea?.targetAudience || "General",
-      commentText: commentText, // ইউজারের আসল কমেন্ট
+      commentText: commentText,
     };
 
     try {
@@ -80,9 +75,7 @@ export default function IdeaDetailsPage() {
 
       if (data.insertedId) {
         Swal.fire("Success!", "Comment posted successfully.", "success");
-        setCommentText(""); // কমেন্ট বক্স খালি করা
-        
-        // লিস্টে নতুন কমেন্টটি সাথে সাথে যুক্ত করা
+        setCommentText("");
         setComments([...comments, { ...commentData, _id: data.insertedId }]);
       }
     } catch (error) {
@@ -90,8 +83,6 @@ export default function IdeaDetailsPage() {
       Swal.fire("Error!", "Failed to post comment.", "error");
     }
   };
-
-  // 🔄 ডাটা লোড হওয়ার সময় সুন্দর স্পিনার দেখাবে (কোড ক্র্যাশ করবে না)
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-white dark:bg-gray-900">
@@ -99,8 +90,6 @@ export default function IdeaDetailsPage() {
       </div>
     );
   }
-
-  // ডাটাবেজে যদি আইডিয়া না পাওয়া যায় (অথবা ব্যাকএন্ড অফ থাকে)
   if (!idea) {
     return (
       <div className="text-center my-24 text-gray-500 text-lg font-medium">
@@ -111,7 +100,6 @@ export default function IdeaDetailsPage() {
 
   return (
     <div className="max-w-3xl mx-auto my-12 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
-      {/* 🚀 আইডিয়া ডিটেইলস সেকশন */}
       <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 text-xs font-semibold rounded-full uppercase">
         {idea?.category || "N/A"}
       </span>
@@ -128,8 +116,6 @@ export default function IdeaDetailsPage() {
       </div>
 
       <hr className="my-8 border-gray-100 dark:border-gray-800" />
-
-      {/* 💬 কমেন্ট করার ফর্ম */}
       <form onSubmit={handleCommentSubmit} className="mb-8">
         <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
           Leave a feedback / comment:
@@ -149,8 +135,6 @@ export default function IdeaDetailsPage() {
           Submit Comment
         </button>
       </form>
-
-      {/* 📜 কমেন্ট লিস্ট সেকশন */}
       <div className="space-y-4">
         <h3 className="text-lg font-bold text-gray-800 dark:text-white">
           Comments ({comments.length})

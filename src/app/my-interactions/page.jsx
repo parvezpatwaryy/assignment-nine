@@ -79,8 +79,8 @@ export default function MyInteractionsPage() {
               <tr>
                 <th className="px-6 py-4 font-medium text-gray-900">Idea Title</th>
                 <th className="px-6 py-4 font-medium text-gray-900">Category</th>
-                {/* 📝 নতুন কলাম হেডার */}
                 <th className="px-6 py-4 font-medium text-gray-900">My Comment</th> 
+                <th className="px-6 py-4 font-medium text-gray-900">Comment Date</th> 
                 <th className="px-6 py-4 font-medium text-gray-900">Target Audience</th>
                 <th className="px-6 py-4 font-medium text-gray-900 text-center">Action</th>
               </tr>
@@ -96,10 +96,17 @@ export default function MyInteractionsPage() {
                       {idea.category}
                     </span>
                   </td>
-                  {/* 📝 নতুন কলাম ডাটা: আপনার ডাটাবেজের ফিল্ডের নাম অনুযায়ী idea.commentText বা idea.comment বসাবেন */}
                   <td className="px-6 py-4 text-gray-600 italic max-w-sm break-words">
-                    "{idea.commentText || "No comment text found"}"
+                    {idea.commentText || "No comment text found"}
                   </td>
+                  <td className="px-6 py-4 text-gray-600 whitespace-nowrap font-medium">
+                    {idea.timestamp ? new Date(idea.timestamp).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    }) : "Just now"}
+                  </td>
+
                   <td className="px-6 py-4 text-xs text-gray-700">
                     {idea.targetAudience || "General"}
                   </td>
@@ -108,7 +115,7 @@ export default function MyInteractionsPage() {
                       onClick={() => handleDeleteComment(idea._id)}
                       className="px-3 py-1.5 bg-red-100 hover:bg-red-600 text-red-600 hover:text-white font-medium rounded-lg text-xs transition-colors shadow-sm"
                     >
-                      🗑️ Remove Interaction
+                      🗑️ Remove
                     </button>
                   </td>
                 </tr>
