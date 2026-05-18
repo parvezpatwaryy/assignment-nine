@@ -6,8 +6,6 @@ import Swal from "sweetalert2";
 export default function ProfilePage() {
   const [stats, setStats] = useState({ totalIdeas: 0, totalComments: 0 });
   const [loading, setLoading] = useState(true);
-
-  // 👤 ১. ইউজার ডাটা লোকাল স্টেট (যা চেঞ্জ করলে স্ক্রিনে সাথে সাথে লাইভ আপডেট হবে)
   const [userData, setUserData] = useState({
     name: "Yusuf Mia",
     email: "yusuf@example.com",
@@ -15,8 +13,6 @@ export default function ProfilePage() {
     joinDate: "May 2026",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256&auto=format&fit=crop",
   });
-
-  // ফর্মে টাইপ করার ডাটা ট্র্যাক করার লোকাল স্টেট
   const [formData, setFormData] = useState({
     name: userData.name,
     role: userData.role,
@@ -26,7 +22,6 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchProfileStats = async () => {
       try {
-        // আলাদা আলাদা ট্রাই-ক্যাচ দিয়ে ফেচ করা হয়েছে যাতে একটি ফেইল করলেও অ্যাপ ক্র্যাশ না করে
         let ideasCount = 0;
         let commentsCount = 0;
 
@@ -64,14 +59,10 @@ export default function ProfilePage() {
 
     fetchProfileStats();
   }, [userData.email]);
-
-  // ✍️ ইনপুট বক্সের ডাটা চেঞ্জ হ্যান্ডেল করা
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
-  // 💾 Save Changes বাটনে ক্লিক করলে স্টেট আপডেট করা
   const handleProfileUpdate = (e) => {
     e.preventDefault();
     
@@ -106,7 +97,6 @@ export default function ProfilePage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* 🪪 বাম পাশের ইউজার কার্ড */}
         <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 shadow-sm flex flex-col items-center text-center">
           <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-indigo-500/20 mb-4">
             <img src={userData.avatar} alt={userData.name} className="w-full h-full object-cover" />
@@ -129,8 +119,6 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-
-        {/* ⚙️ ডান পাশের অ্যাকাউন্ট সেটিংস ফর্ম */}
         <div className="lg:col-span-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 md:p-8 shadow-sm">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-50 dark:border-gray-800/60">Account Settings</h3>
           
