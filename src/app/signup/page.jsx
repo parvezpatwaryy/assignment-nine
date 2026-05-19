@@ -58,7 +58,6 @@ const RegistrationPage = () => {
             <FieldError className="text-xs text-red-500" />
           </TextField>
           <TextField
-            isRequired
             name="image"
             type="url"
           >

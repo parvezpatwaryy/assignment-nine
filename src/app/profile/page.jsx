@@ -2,36 +2,28 @@
 
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-// 🎯 ইম্পোর্ট পাথটি ঠিক করা হলো (আপনার প্রোফাইল ফোল্ডার অনুযায়ী সঠিক রিলেটিভ পাথ)
 import { authClient } from "../lib/auth-client"; 
 
 export default function ProfilePage() {
-  // Better-Auth ক্লায়েন্ট থেকে রিয়েল-টাইম সেশন হুক ব্যবহার করা হলো
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
   const [stats, setStats] = useState({ totalIdeas: 0, totalComments: 0 });
   const [loading, setLoading] = useState(true);
-
-  // ফর্ম এবং ইউজারের ডাইনামিক স্টেট
   const [formData, setFormData] = useState({
     name: "",
     role: "Frontend Web Developer",
     avatar: "",
   });
-
-  // Better-Auth থেকে ইউজার ডেটা লোড হলে স্টেট আপডেট করা
   useEffect(() => {
     if (user) {
       setFormData({
         name: user.name || "",
         role: "Frontend Web Developer", 
-        avatar: user.image || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256",
+        avatar: user.image || user.imageUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256",
       });
     }
   }, [user]);
-
-  // ইউজারের আসল ইমেইল দিয়ে ব্যাকএন্ড এপিআই থেকে কাউন্ট ডেটা নিয়ে আসা
   useEffect(() => {
     if (!user?.email) return;
 
@@ -83,11 +75,7 @@ export default function ProfilePage() {
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     
-    try {
-      // 🎯 পরবর্তীতে Better-Auth প্রোফাইল ডেটা আপডেট করার জন্য এই মেথড ব্যবহার করতে পারেন:
-      // await authClient.user.update({ name: formData.name, image: formData.avatar });
-
-      Swal.fire({
+    try {Swal.fire({
         title: "Success!",
         text: "Profile information updated successfully.",
         icon: "success",
@@ -103,8 +91,6 @@ export default function ProfilePage() {
       });
     }
   };
-
-  // লোডিং স্টেট হ্যান্ডলিং
   if (isPending || (user && loading)) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -112,8 +98,6 @@ export default function ProfilePage() {
       </div>
     );
   }
-
-  // যদি কোনো ইউজার লগইন না থাকে
   if (!user) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -132,7 +116,6 @@ export default function ProfilePage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* বাম পাশের প্রোফাইল কার্ড */}
         <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 shadow-sm flex flex-col items-center text-center">
           <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-indigo-500/20 mb-4">
             <img src={formData.avatar} alt={formData.name} className="w-full h-full object-cover" />
@@ -155,8 +138,6 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-
-        {/* ডান পাশের ফর্ম সেকশন */}
         <div className="lg:col-span-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 md:p-8 shadow-sm">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-50 dark:border-gray-800/60">Account Settings</h3>
           
