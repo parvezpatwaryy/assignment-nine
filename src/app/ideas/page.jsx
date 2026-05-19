@@ -128,7 +128,7 @@ export default function IdeasPage() {
                     )}
                   </div>
                   <div className="text-left mt-1">
-                    By: <span className="font-medium text-gray-600 dark:text-gray-300">{idea.userName || "Yusuf Mia"}</span>
+                    By: <span className="font-medium text-gray-600 dark:text-gray-300">{idea.userName || "Parvez Patwary"}</span>
                   </div>
                 </div>
                 <div className="mt-5">
