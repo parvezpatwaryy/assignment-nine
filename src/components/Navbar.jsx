@@ -91,7 +91,7 @@ const Navbar = () => {
                 >
                   <img
                     className="h-9 w-9 rounded-full object-cover border border-gray-200 dark:border-gray-700"
-                    src={user.image || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100"}
+                    src={user.imageUrl || user.image || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100"}
                     alt="User Profile"
                   />
                 </button>
