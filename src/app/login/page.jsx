@@ -1,8 +1,9 @@
 "use client";
 
 import { toast } from "react-toastify";
-import { Button, Description, FieldError, Form, Input, Label, TextField, Card } from "@heroui/react";
+import { Button, Description, FieldError, Form, Input, Label, TextField, Card, Separator } from "@heroui/react";
 import { authClient } from "../lib/auth-client";
+import { FcGoogle } from "react-icons/fc";
 
 const LoginPage = () => {
   const onSubmit = async (e) => {
@@ -31,6 +32,12 @@ const LoginPage = () => {
       toast.error("Login failed!");
     }
   };
+
+  const handleGoogleRegistration = async () => {
+    await authClient.signIn.social({
+      provider: "google"
+    })
+  }
 
   return (
     <div className="max-w-7xl mx-auto m-5 flex flex-col items-center justify-center min-h-[85vh]">
@@ -83,6 +90,14 @@ const LoginPage = () => {
             </Button>
           </div>
         </Form>
+        <div className="flex justify-center items-center gap-3">
+          <Separator />
+          <div className="whitespace-nowrap font-bold">or</div>
+          <Separator />
+        </div>
+        <div>
+          <Button onClick={handleGoogleRegistration} variant="outline" className={'w-full'}><FcGoogle />Login with Google</Button>
+        </div>
       </Card>
     </div>
   );

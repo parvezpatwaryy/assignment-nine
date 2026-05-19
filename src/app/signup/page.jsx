@@ -1,8 +1,9 @@
 "use client";
 
 import { toast } from "react-toastify";
-import { Button, Description, FieldError, Form, Input, Label, TextField, Card } from "@heroui/react";
+import { Button, Description, FieldError, Form, Input, Label, TextField, Card, Separator } from "@heroui/react";
 import { authClient } from "../lib/auth-client";
+import { FcGoogle } from "react-icons/fc";
 
 const RegistrationPage = () => {
 
@@ -15,8 +16,8 @@ const RegistrationPage = () => {
       const { data, error } = await authClient.signUp.email({
         email: user.email,
         password: user.password,
-        name: user.name,   
-        image: user.image, 
+        name: user.name,
+        image: user.image,
       });
 
       if (data) {
@@ -35,15 +36,21 @@ const RegistrationPage = () => {
     }
   };
 
+  const handleGoogleRegistration = async () => {
+    await authClient.signIn.social({
+      provider: "google"
+    })
+  }
+
   return (
     <div className="max-w-7xl mx-auto m-5 flex flex-col items-center justify-center min-h-[85vh]">
       <h2 className="text-center m-4 text-2xl font-bold text-gray-900 dark:text-white">Create account</h2>
-      
+
       <Card className="border p-6 shadow-lg bg-white dark:bg-zinc-900 rounded-2xl">
         <Form onSubmit={onSubmit} className="flex w-96 flex-col gap-4">
           <TextField
             isRequired
-            name="name" 
+            name="name"
             type="text"
           >
             <Label className="text-sm font-medium">Name</Label>
@@ -52,7 +59,7 @@ const RegistrationPage = () => {
           </TextField>
           <TextField
             isRequired
-            name="image" 
+            name="image"
             type="url"
           >
             <Label className="text-sm font-medium">Photo URL</Label>
@@ -60,7 +67,7 @@ const RegistrationPage = () => {
             <FieldError className="text-xs text-red-500" />
           </TextField>
           <TextField
-            isRequired 
+            isRequired
             name="email"
             type="email"
             validate={(value) => {
@@ -105,6 +112,14 @@ const RegistrationPage = () => {
             </Button>
           </div>
         </Form>
+        <div className="flex justify-center items-center gap-3">
+          <Separator />
+          <div className="whitespace-nowrap font-bold">or</div>
+          <Separator />
+        </div>
+        <div>
+          <Button onClick={handleGoogleRegistration} variant="outline" className={'w-full'}><FcGoogle />Registration with Google</Button>
+        </div>
       </Card>
     </div>
   );
