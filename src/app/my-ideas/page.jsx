@@ -10,7 +10,7 @@ export default function MyIdeasPage() {
   const fetchMyIdeas = () => {
     if (!userEmail) return;
     setLoading(true);
-    fetch(`http://localhost:8000/api/my-ideas?email=${userEmail}`)
+    fetch(`https://latest-assignment.vercel.app/api/my-ideas?email=${userEmail}`)
       .then((res) => res.json())
       .then((data) => {
         setMyIdeas(data);
@@ -38,7 +38,7 @@ export default function MyIdeasPage() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await fetch(`http://localhost:8000/api/ideas/${id}`, {
+          const response = await fetch(`https://latest-assignment.vercel.app/api/ideas/${id}`, {
             method: "DELETE",
           });
           const data = await response.json();
@@ -69,7 +69,7 @@ export default function MyIdeasPage() {
 
     if (newTitle) {
       try {
-        const response = await fetch(`http://localhost:8000/api/ideas/${idea._id}`, {
+        const response = await fetch(`https://latest-assignment.vercel.app/api/ideas/${idea._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...idea, title: newTitle }),

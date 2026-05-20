@@ -18,14 +18,14 @@ export default function IdeaDetailsPage() {
     const fetchDetailsData = async () => {
       try {
         setLoading(true);
-        const ideaRes = await fetch(`http://localhost:8000/api/ideas/${id}`);
+        const ideaRes = await fetch(`https://latest-assignment.vercel.app/api/ideas/${id}`);
         if (ideaRes.ok) {
           const ideaData = await ideaRes.json();
           if (isMounted) setIdea(ideaData);
         } else {
           if (isMounted) setIdea(null);
         }
-        const commentsRes = await fetch(`http://localhost:8000/api/comments?ideaId=${id}`);
+        const commentsRes = await fetch(`https://latest-assignment.vercel.app/api/comments?ideaId=${id}`);
         if (commentsRes.ok) {
           const commentsData = await commentsRes.json();
           if (isMounted) setComments(Array.isArray(commentsData) ? commentsData : []);
@@ -65,7 +65,7 @@ export default function IdeaDetailsPage() {
     };
 
     try {
-      const response = await fetch("http://localhost:8000/api/comments", {
+      const response = await fetch("https://latest-assignment.vercel.app/api/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(commentData),

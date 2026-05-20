@@ -33,7 +33,7 @@ export default function ProfilePage() {
         let commentsCount = 0;
 
         try {
-          const ideasRes = await fetch(`http://localhost:8000/api/ideas/count?email=${user.email}`);
+          const ideasRes = await fetch(`https://latest-assignment.vercel.app/api/ideas/count?email=${user.email}`);
           if (ideasRes.ok) {
             const ideasData = await ideasRes.json();
             ideasCount = ideasData.count || 0;
@@ -43,7 +43,7 @@ export default function ProfilePage() {
         }
 
         try {
-          const commentsRes = await fetch(`http://localhost:8000/api/comments/count?email=${user.email}`);
+          const commentsRes = await fetch(`https://latest-assignment.vercel.app/api/comments/count?email=${user.email}`);
           if (commentsRes.ok) {
             const commentsData = await commentsRes.json();
             commentsCount = commentsData.count || 0;

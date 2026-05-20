@@ -10,7 +10,7 @@ export default function MyInteractionsPage() {
 
   const fetchMyInteractions = () => {
     setLoading(true);
-    fetch(`http://localhost:8000/api/my-interactions?email=${userEmail}`)
+    fetch(`https://latest-assignment.vercel.app/api/my-interactions?email=${userEmail}`)
       .then((res) => res.json())
       .then((data) => {
         setInteractedIdeas(data);
@@ -38,7 +38,7 @@ export default function MyInteractionsPage() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await fetch(`http://localhost:8000/api/comments/${id}`, {
+          const response = await fetch(`https://latest-assignment.vercel.app/api/comments/${id}`, {
             method: "DELETE",
           });
           const data = await response.json();
