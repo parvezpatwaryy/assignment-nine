@@ -15,7 +15,7 @@ export default function IdeasPage() {
       try {
         setLoading(true);
         const res = await fetch(
-          `https://latest-assignment.vercel.app/api/ideas?search=${search}&category=${category}`
+          `https://assignment-nine-mu-five.vercel.app/api/ideas?search=${search}&category=${category}`
         );
         if (res.ok) {
           let data = await res.json();

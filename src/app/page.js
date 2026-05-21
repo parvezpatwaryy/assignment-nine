@@ -30,7 +30,7 @@ export default function HomePage() {
     return () => clearInterval(timer);
   }, [slides.length]);
   useEffect(() => {
-    fetch("https://latest-assignment.vercel.app/api/trending-ideas")
+    fetch("https://assignment-nine-mu-five.vercel.app/api/trending-ideas")
       .then((res) => res.json())
       .then((data) => {
         setTrendingIdeas(data);

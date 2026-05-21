@@ -34,7 +34,7 @@ export default function AddIdeaPage() {
     };
 
     try {
-      const response = await fetch("https://latest-assignment.vercel.app/api/ideas", {
+      const response = await fetch("https://assignment-nine-mu-five.vercel.app/api/ideas", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
